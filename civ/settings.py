@@ -76,7 +76,7 @@ WSGI_APPLICATION = 'civ.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'stc',
+        'NAME': 'civ',
         'USER': 'root',
         'PASSWORD': 'admin',
         'HOST': '110.41.2.77',
