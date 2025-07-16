@@ -1,2 +1,3 @@
 ﻿.idea
 civ/__pycache__
+jenkins_monitor/migrations
