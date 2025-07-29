@@ -1,3 +1,4 @@
 ﻿.idea
 civ/__pycache__
 jenkins_monitor/migrations
+job_dispatcher/migrations
