@@ -125,3 +125,24 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Celery configuration
+
+# 消息代理的 URL， 指定 Redis 服务器地址和数据库编号
+CELERY_BROKER_URL = 'redis://10.99.65.75:6379/7'
+# 结果后端的 URL，指定 Redis 服务器地址和数据库编号
+CELERY_RESULT_BACKEND = 'redis://10.99.65.75:6379/7'
+
+# 其他可选配置
+
+# 任务序列化方式，这里使用 JSON 格式
+CELERY_TASK_SERIALIZER = 'json'
+# 结果序列化方式，这里使用 JSON 格式
+CELERY_RESULT_SERIALIZER = 'json'
+# 接受的内容类型，这里只接受 JSON 格式
+CELERY_ACCEPT_CONTENT = ['json']
+# 时区设置
+CELERY_TIMEZONE = 'Asia/Shanghai'
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+

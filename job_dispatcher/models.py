@@ -26,6 +26,7 @@ class JenkinsTask(BaseModel):
         ('jenkins', 'Jenkins'),
     )
     title = models.CharField(max_length=200, default="", blank=True)
+    job_name = models.CharField(max_length=200, default="", blank=True)
     user = models.CharField(max_length=200, default="", blank=True)
     parameters = models.JSONField(default=dict, blank=True)
     trigger_type = models.CharField(
@@ -51,6 +52,7 @@ class JenkinsBuild(models.Model):
     task = models.ForeignKey(JenkinsTask, on_delete=models.CASCADE, related_name='builds')
     job_name = models.CharField(max_length=200, default="", blank=True)
     number = models.IntegerField(default=0)
+    url = models.URLField(max_length=500, default="", blank=True)
     status = models.CharField(
         max_length=20,
         choices=STATUS_CHOICES,
