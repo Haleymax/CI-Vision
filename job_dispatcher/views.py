@@ -1,11 +1,13 @@
 import logging
 
-from django.contrib.admin import action
-from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework import viewsets, status
 from rest_framework.permissions import AllowAny
 
 from job_dispatcher.models import JenkinsJob, JenkinsTask
 from job_dispatcher.serializers import JenkinsJobSerializer, JenkinsBuildSerializer
+from job_dispatcher.tasks import trigger_jenkins_job
 
 # Create your views here.
 
@@ -44,20 +46,31 @@ class JenkinsTaskViewSet(viewsets.ModelViewSet):
         return qs
 
     @action(detail=False, methods=['post'])
-    def trigger_job(self, request, *args, **kwargs):
+    def create_task(self, request, *args, **kwargs):
         """
-        Trigger a Jenkins job.
+        create a Jenkins job.
         """
-        job_name = request.data.get('job_name')
-        params = request.data.get('params', {})
+        request_body = request.data
+        title = request_body.get('title', None)
+        job_name = request_body.get('job_name', None)
+        parameters = request_body.get('parameters', {})
+        if request.user and request.user.is_authenticated:
+            user = request.user.username
+        else:
+            user = request_body.get('user', "default_user")
 
-        if not job_name:
-            return Response({"error": "Job name is required."}, status=400)
+        build_id = request_body.get('build_id', None)
+        trigger_type = request_body.get('trigger_type', None)
 
-        try:
-            jenkins_client = JenkinsClient()
-            build = jenkins_client.trigger_job(job_name, params=params)
-            return Response({"message": "Job triggered successfully.", "build_id": build.id}, status=200)
-        except Exception as e:
-            logger.error(f"Failed to trigger job {job_name}: {str(e)}")
-            return Response({"error": str(e)}, status=500)
+        result = JenkinsTask.objects.create(
+            title=title,
+            job_name=job_name,
+            user=user,
+            parameters=parameters,
+            trigger_type=trigger_type
+        )
+        trigger_jenkins_job.delay(result.id, trigger_type, build_id)
+        return Response(status=status.HTTP_200_OK, data={
+            "id": result.id,
+            "title": result.title,
+        })
