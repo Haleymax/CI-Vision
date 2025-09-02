@@ -1,11 +1,12 @@
-from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods, require_GET
 from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime
 import json
 import os
-from pathlib import Path
+
+from utils.ai_agent import FileAgent
+
 
 # Create your views here.
 
@@ -32,8 +33,14 @@ def hello_world(request):
 @csrf_exempt
 @require_http_methods(["GET", "POST"])
 def list_files_with_ai(request):
-    
-    pass
+
+    base_path = os.path.dirname(os.path.dirname(__file__))
+
+    file_agent = FileAgent(model="deepseek-chat", api_key="sk-dea088bef52f4ef4a1d0ba4feeaf4ed6")
+    result = file_agent.list_all_files(base_path)
+    return JsonResponse({
+        'result': result,
+    })
 
 
 

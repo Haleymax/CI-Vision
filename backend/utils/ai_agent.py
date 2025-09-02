@@ -21,3 +21,6 @@ class FileAgent(AIAgent):
             agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
             verbose=True
         )
+
+    def list_all_files(self, file_path):
+        return self.agent.run_work(f"请使用list_directory工具列出 {file_path} 目录的内容")
