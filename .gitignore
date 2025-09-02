@@ -2,3 +2,5 @@
 backend/backend/__pycache__
 backend/test
 backend/db.sqlite3
+backend/agent/__pycache__
+backend/agent/migrations/__pycache__
