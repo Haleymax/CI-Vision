@@ -1,6 +1,16 @@
 from pathlib import Path
 
 def list_directory(path: str, recursive: bool = False) -> list:
+    """
+    列出目录下所有文件
+    
+    Args:
+        path (str): 目录路径
+        recursive (bool): 是否递归列出子目录中的文件
+    
+    Returns:
+        list: 所有文件路径的列表
+    """
     path = Path(path).resolve()
     
     if not path.exists():
