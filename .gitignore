@@ -4,3 +4,5 @@ backend/test
 backend/db.sqlite3
 backend/agent/__pycache__
 backend/agent/migrations/__pycache__
+backend/mcp/__pycache__
+backend/utils/__pycache__
