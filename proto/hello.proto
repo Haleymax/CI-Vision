@@ -12,9 +12,11 @@ service Greeter {
 // 请求消息，包含一个字符串
 message HelloRequest {
   string name = 1;
+  int32 age = 2;
 }
 
 // 响应消息，包含一个字符串
 message HelloReply {
   string message = 1;
+  int32 age = 2;
 }
