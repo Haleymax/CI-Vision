@@ -6,3 +6,5 @@ backend/agent/__pycache__
 backend/agent/migrations/__pycache__
 backend/mcp/__pycache__
 backend/utils/__pycache__
+ci_agent/.env
+ci_agent/__pycache__
