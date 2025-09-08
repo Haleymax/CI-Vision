@@ -16,7 +16,8 @@ var (
 )
 
 type Config struct {
-	MySQL autoload.MySQLConfig `mapstructure:"mysql"`
+	MySQL  autoload.MySQLConfig  `mapstructure:"mysql"`
+	System autoload.SystemConfig `mapstructure:"system"`
 }
 
 func LoadConfig() *Config {
