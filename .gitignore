@@ -9,3 +9,4 @@ backend/utils/__pycache__
 ci_agent/.env
 ci_agent/__pycache__
 ci_agent/.venv
+backend/config/config.yaml

@@ -1,32 +1,28 @@
 package main
 
 import (
-	"context"
+	"civ/data"
 	"log"
-	"time"
 
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
-
-	pb "civ/proto"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	conn, err := grpc.Dial("localhost:50051", grpc.WithTransportCredentials(insecure.NewCredentials()))
-	if err != nil {
-		log.Fatalf("did not connect: %v", err)
+	r := gin.Default()
+	db, err := data.IniDB()
+	if db != nil {
+		log.Println("数据库连接成功")
 	}
-	defer conn.Close()
+	defer data.CloseDB()
 
-	c := pb.NewGreeterClient(conn)
-
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
-	defer cancel()
-
-	r, err := c.SayHello(ctx, &pb.HelloRequest{Name: "Go Client", Age: 30})
 	if err != nil {
-		log.Fatalf("could not greet: %v", err)
+		log.Println(err)
+		panic(err)
 	}
-	log.Printf("Response: %s", r.Message)
-	log.Printf("Original age: 30, Server processed age: %d", r.Age)
+	r.GET("/ping", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "pong",
+		})
+	})
+	r.Run(":8085")
 }
