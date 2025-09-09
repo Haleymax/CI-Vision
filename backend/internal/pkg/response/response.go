@@ -1,10 +1,10 @@
 package response
 
 import (
+	"civ/config"
 	"civ/internal/pkg/errors"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"civ/config"
 	"time"
 )
 
@@ -32,12 +32,35 @@ func Resp() *Response {
 	}
 }
 
+// Fail 错误返回
 func (r *Response) Fail(c *gin.Context, code int, msg string, data ...any) {
 	r.SetCode(code)
 	r.SetMessage(msg)
 	if data != nil {
 		r.WithData(data[0])
 	}
+	r.json(c)
+}
+
+// FailCode 自定义错误码返回
+func (r *Response) FailCode(c *gin.Context, code int, msg ...string) {
+	r.SetCode(code)
+	if msg != nil {
+		r.SetMessage(msg[0])
+	}
+	r.json(c)
+}
+
+// Success 正确返回
+func (r *Response) Success(c *gin.Context) {
+	r.SetCode(errors.SUCCESS)
+	r.json(c)
+}
+
+// WithDataSuccess 成功后需要返回值
+func (r *Response) WithDataSuccess(c *gin.Context, data any) {
+	r.SetCode(errors.SUCCESS)
+	r.WithData(data)
 	r.json(c)
 }
 
@@ -83,4 +106,31 @@ func (r *Response) json(c *gin.Context) {
 	}
 	r.result.Cost = time.Since(c.GetTime("requestStartTime")).String()
 	c.AbortWithStatusJSON(r.httpCode, r.result)
+}
+
+// Success 业务成功响应
+func Success(c *gin.Context, data ...any) {
+	if data != nil {
+		Resp().WithDataSuccess(c, data[0])
+		return
+	}
+	Resp().Success(c)
+}
+
+// FailCode 业务失败响应
+func FailCode(c *gin.Context, code int, data ...any) {
+	if data != nil {
+		Resp().WithData(data[0]).FailCode(c, code)
+		return
+	}
+	Resp().FailCode(c, code)
+}
+
+// Fail 业务失败响应
+func Fail(c *gin.Context, code int, message string, data ...any) {
+	if data != nil {
+		Resp().WithData(data[0]).FailCode(c, code, message)
+		return
+	}
+	Resp().FailCode(c, code, message)
 }
