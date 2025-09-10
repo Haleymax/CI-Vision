@@ -20,6 +20,13 @@ type Config struct {
 	System autoload.SystemConfig `mapstructure:"system"`
 }
 
+// LoadConfig loads application configuration from a file and returns a populated Config.
+// 
+// LoadConfig looks for a YAML file named `config.yaml` inside a `config` subdirectory of
+// the current working directory (i.e. `<workDir>/config/config.yaml`). It uses Viper to
+// read and unmarshal the file into a Config value and returns a pointer to that value.
+// If reading or unmarshalling the configuration fails, the function logs a fatal error and
+// terminates the program.
 func LoadConfig() *Config {
 	workDir, _ := os.Getwd()
 	configFile := filepath.Join(workDir, "config", "config.yaml")

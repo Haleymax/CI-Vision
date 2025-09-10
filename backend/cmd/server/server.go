@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// the process is terminated via log.Fatal.
 func RunServer() {
 	r := gin.Default()
 
