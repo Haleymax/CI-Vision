@@ -22,7 +22,7 @@ type Config struct {
 
 func LoadConfig() *Config {
 	workDir, _ := os.Getwd()
-	configFile := filepath.Join(workDir, "config.yaml")
+	configFile := filepath.Join(workDir, "config", "config.yaml")
 	log.Println("Loading config from ", configFile)
 
 	viper.SetConfigFile(configFile)
