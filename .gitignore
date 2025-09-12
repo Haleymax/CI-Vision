@@ -6,7 +6,9 @@ backend/agent/__pycache__
 backend/agent/migrations/__pycache__
 backend/mcp/__pycache__
 backend/utils/__pycache__
-ci_agent/.env
-ci_agent/__pycache__
-ci_agent/.venv
+agent/.env
+agent/__pycache__
+agent/.venv
 backend/config/config.yaml
+agent/__pycache__/hello_pb2_grpc.cpython-313.pyc
+agent/__pycache__/hello_pb2.cpython-313.pyc
